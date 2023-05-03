@@ -8,6 +8,7 @@
   "dependencies": {
     "@platformatic/sql-graphql": "^0.21.1",
     "@platformatic/sql-mapper": "^0.21.1",
+    "fast-csv": "^4.3.6",
     "moment": "^2.29.4",
     "platformatic": "^0.21.1"
   },
