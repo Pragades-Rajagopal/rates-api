@@ -17,36 +17,35 @@ module.exports = async function (app) {
 
     app.get(
         '/export',
-        exportReport
-    )
-}
-
-const exportReport = async (request, response) => {
-    try {
-        const data = await app.platformatic.entities.rate.find({
-            limit: 100
-        });
-        const filePath = exportPath;
-        let time = moment().utcOffset("+05:30").format('YYYYMMDDhhmmss');
-        const filename = '/export_' + time + '.csv';
-        const endPath = filePath + filename;
-        console.log("endPath  --- ", endPath);
-        const ws = fs.createWriteStream(endPath);
-        csv.write(
-            data,
-            { headers: true }
-        )
-            .on('finish', () => {
+        async (request, response) => {
+            try {
+                const { db, sql } = app.platformatic;
+                const sqlStatement = sql`SELECT * FROM rates;`
+                const data = await db.query(sqlStatement)
+                const filePath = exportPath;
+                let time = moment().utcOffset("+05:30").format('YYYYMMDDhhmmss');
+                const filename = '/export_' + time + '.csv';
+                const endPath = filePath + filename;
+                console.log("endPath  --- ", endPath);
+                const ws = fs.createWriteStream(endPath);
+                csv.write(
+                    data,
+                    { headers: true }
+                )
+                    .on('finish', () => {
+                        return {
+                            message: "file ready for download",
+                            download_link: ""
+                        }
+                    })
+                    .pipe(ws)
+            } catch (error) {
+                console.log(error);
                 return {
-                    message: "file ready for download",
+                    message: "error while exporting report",
                     download_link: ""
                 }
-            })
-            .pipe(ws)
-    } catch (error) {
-        return {
-            message: "error while exporting report",
-            download_link: ""
+            }
         }
-    }
+    )
 }
