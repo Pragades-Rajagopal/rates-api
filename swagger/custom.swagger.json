@@ -1,0 +1,37 @@
+{
+    "exportSchema": {
+        "parameters": [
+            {
+                "schema": {
+                    "type": "string"
+                },
+                "in": "path",
+                "name": "sort",
+                "required": true
+            }
+        ],
+        "schema": {
+            "response": {
+                "200": {
+                    "type": "object",
+                    "properties": {
+                        "message": {
+                            "type": "string"
+                        },
+                        "download_link": {
+                            "type": "string"
+                        }
+                    }
+                },
+                "500": {
+                    "type": "object",
+                    "properties": {
+                        "message": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
