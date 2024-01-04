@@ -10,5 +10,5 @@ module.exports = async function (app) {
             options.input.timeStamp = currentTime;
             return await originalSave(options);
         }
-    })
+    });
 }
